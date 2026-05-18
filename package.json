@@ -30,6 +30,7 @@
     "babel-jest": "^30.4.1",
     "concurrently": "^9.1.0",
     "jest": "^30.4.2",
+    "jest-environment-jsdom": "^30.4.1",
     "json-server": "^0.17.4",
     "vite": "^5.4.10"
   }
