@@ -8,7 +8,8 @@
     "server": "json-server --watch db.json --port 3001",
     "client": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "test": "jest"
   },
   "dependencies": {
     "@emotion/react": "^11.13.3",
