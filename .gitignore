@@ -4,6 +4,5 @@ dist/
 .env.local
 
 # testes
-src/__tests__/
 coverage/
 cobertura.txt
