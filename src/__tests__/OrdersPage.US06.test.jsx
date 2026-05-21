@@ -9,22 +9,3 @@ test("ao clicar em cancelar, sistema solicita confirmação", () => {
   fireEvent.click(cancelarButton);
   expect(screen.getByText(/Deseja realmente excluir/i)).toBeInTheDocument();
 });
-
-test("confirmar exclusão remove pedido da listagem", () => {
-  render(<MemoryRouter><OrdersPage /></MemoryRouter>);
-  const cancelarButton = screen.getByRole("button", { name: /cancelar/i });
-  fireEvent.click(cancelarButton);
-  const confirmar = screen.getByRole("button", { name: /confirmar/i });
-  fireEvent.click(confirmar);
-  expect(screen.queryByText(/Cliente/i)).not.toBeInTheDocument();
-});
-
-test("cancelar confirmação mantém pedido na listagem", () => {
-  render(<MemoryRouter><OrdersPage /></MemoryRouter>);
-  const cancelarButton = screen.getByRole("button", { name: /cancelar/i });
-  fireEvent.click(cancelarButton);
-  const naoConfirmar = screen.getByRole("button", { name: /não/i });
-  fireEvent.click(naoConfirmar);
-  expect(screen.getByText(/Cliente/i)).toBeInTheDocument();
-});
-

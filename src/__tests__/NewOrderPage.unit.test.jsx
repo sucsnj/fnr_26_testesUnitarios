@@ -14,13 +14,7 @@ test("não permite registrar pedido sem nome do cliente", async () => {
 
 test("não permite registrar pedido sem itens", async () => {
   render(<MemoryRouter><NewOrderPage /></MemoryRouter>);
-  fireEvent.change(screen.getByTestId("input-cliente"), { target: { value: "Carlos" } });
+  fireEvent.change(screen.getByTestId("input-cliente"), { target: { value: "Rogens" } });
   fireEvent.click(screen.getByTestId("btn-registrar-pedido"));
   expect(screen.getByTestId("alert-erro")).toHaveTextContent("Adicione pelo menos um item.");
-});
-
-test("calcula total corretamente ao adicionar item", () => {
-  render(<MemoryRouter><NewOrderPage /></MemoryRouter>);
-  // simular cardápio mockado
-  // aqui você pode mockar api.getCardapio para retornar itens
 });

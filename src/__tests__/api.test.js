@@ -4,10 +4,10 @@ import * as api from "../api/api";
 jest.mock("axios");
 
 test("listar pedidos chama GET /pedidos", async () => {
-  axios.get.mockResolvedValue({ data: [{ id: 1, cliente: "Carlos" }] });
+  axios.get.mockResolvedValue({ data: [{ id: 1, cliente: "Rogens" }] });
   const pedidos = await api.getPedidos();
   expect(axios.get).toHaveBeenCalledWith("/pedidos");
-  expect(pedidos[0].cliente).toBe("Carlos");
+  expect(pedidos[0].cliente).toBe("Rogens");
 });
 
 test("criar pedido chama POST /pedidos", async () => {
