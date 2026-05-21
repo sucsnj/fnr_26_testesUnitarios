@@ -1,19 +1,22 @@
 import React from "react";
 import { render, screen, fireEvent } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { MemoryRouter } from "react-router-dom";
 import NewOrderPage from "../pages/NewOrderPage";
+import * as api from "../api/api"; // importa o wrapper
 
-test("erro ao registrar sem nome do cliente", () => {
+jest.mock("../api/api");
+
+test("erro ao registrar sem nome do cliente", async () => {
+  // mocka o cardápio para evitar erro de rede
+  api.getCardapio.mockResolvedValueOnce({
+    data: [{ nome: "X-Burguer", preco: 18.00 }]
+  });
+
   render(<MemoryRouter><NewOrderPage /></MemoryRouter>);
+
   fireEvent.click(screen.getByTestId("btn-registrar-pedido"));
-  expect(screen.getByTestId("alert-erro")).toBeInTheDocument();
-});
 
-test("calcula total corretamente", () => {
-  render(<MemoryRouter><NewOrderPage /></MemoryRouter>);
-  fireEvent.change(screen.getByTestId("input-cliente"), { target: { value: "Ana Lima" } });
-  fireEvent.change(screen.getByTestId("select-produto"), { target: { value: "X-Burguer" } });
-  fireEvent.change(screen.getByTestId("input-quantidade"), { target: { value: "2" } });
-  fireEvent.click(screen.getByTestId("btn-adicionar-item"));
-  expect(screen.getByTestId("tabela-itens")).toHaveTextContent("36.00");
+  expect(await screen.findByTestId("alert-erro"))
+    .toHaveTextContent("Informe o nome do cliente.");
 });

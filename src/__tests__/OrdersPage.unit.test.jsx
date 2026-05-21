@@ -14,8 +14,12 @@ const pedidosMock = [
 test("filtra pedidos por status", async () => {
   api.getPedidos.mockResolvedValue({ data: pedidosMock });
   render(<MemoryRouter><OrdersPage /></MemoryRouter>);
+
   await waitFor(() => expect(screen.getByText(/Rogens/i)).toBeInTheDocument());
-  fireEvent.click(screen.getByText(/Pronto/i));
+
+  const prontoChip = await screen.findByRole("button", { name: /Pronto \(1\)/i });
+  fireEvent.click(prontoChip);
+
   expect(screen.getByText(/Ana/i)).toBeInTheDocument();
   expect(screen.queryByText(/Rogens/i)).not.toBeInTheDocument();
 });
