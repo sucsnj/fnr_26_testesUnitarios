@@ -82,7 +82,12 @@ export default function OrderCard({ pedido, onRefresh }) {
             </IconButton>
           </Tooltip>
           <Tooltip title="Cancelar pedido">
-            <IconButton size="small" color="error" onClick={handleDelete}>
+            <IconButton
+              size="small"
+              color="error"
+              onClick={handleDelete}
+              aria-label="Cancelar pedido"
+            >
               <DeleteIcon />
             </IconButton>
           </Tooltip>

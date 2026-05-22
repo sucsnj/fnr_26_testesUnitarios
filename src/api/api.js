@@ -1,8 +1,7 @@
 import axios from 'axios'
 
-const api = axios.create({
-  baseURL: '/api',
-})
+const _client = (axios && typeof axios.create === 'function') ? axios.create({ baseURL: '/api' }) : null
+const api = _client && typeof _client.get === 'function' ? _client : axios
 
 export const getPedidos = () => api.get('/pedidos?_sort=criadoEm&_order=desc')
 export const getPedidoById = (id) => api.get(`/pedidos/${id}`)

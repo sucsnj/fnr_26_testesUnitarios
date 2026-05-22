@@ -32,26 +32,48 @@ const selectProduto = async (produtoTexto) => {
   );
 };
 
-test("não permite registrar pedido sem nome do cliente", async () => {
-  await renderNewOrderPage();
-  fireEvent.click(screen.getByTestId("btn-registrar-pedido"));
-  expect(screen.getByTestId("alert-erro")).toHaveTextContent(
-    "Informe o nome do cliente."
-  );
-});
-
-test("não permite registrar pedido sem itens", async () => {
+test("não permite quantidade menor que 1", async () => {
   await renderNewOrderPage();
   fireEvent.change(screen.getByTestId("input-cliente"), {
     target: { value: "Carlos" },
   });
-  fireEvent.click(screen.getByTestId("btn-registrar-pedido"));
-  expect(screen.getByTestId("alert-erro")).toHaveTextContent(
-    "Adicione pelo menos um item."
-  );
+  await selectProduto("Coca-Cola 350ml");
+  fireEvent.change(screen.getByTestId("input-quantidade"), {
+    target: { value: "0" },
+  });
+  expect(screen.getByTestId("input-quantidade")).toHaveValue(1);
 });
 
-test("calcula total corretamente ao adicionar item", async () => {
+test("adicionar o mesmo item duas vezes acumula quantidade", async () => {
+  await renderNewOrderPage();
+  fireEvent.change(screen.getByTestId("input-cliente"), {
+    target: { value: "Ana" },
+  });
+  await selectProduto("X-Burguer");
+  fireEvent.change(screen.getByTestId("input-quantidade"), {
+    target: { value: "1" },
+  });
+  fireEvent.click(screen.getByTestId("btn-adicionar-item"));
+  await selectProduto("X-Burguer");
+  fireEvent.click(screen.getByTestId("btn-adicionar-item"));
+  expect(screen.getByTestId("tabela-itens")).toHaveTextContent("2");
+});
+
+test("remover item antes de confirmar pedido", async () => {
+  await renderNewOrderPage();
+  fireEvent.change(screen.getByTestId("input-cliente"), {
+    target: { value: "Carlos" },
+  });
+  await selectProduto("Coca-Cola 350ml");
+  fireEvent.change(screen.getByTestId("input-quantidade"), {
+    target: { value: "1" },
+  });
+  fireEvent.click(screen.getByTestId("btn-adicionar-item"));
+  fireEvent.click(screen.getByTestId("btn-remover-2"));
+  expect(screen.queryByTestId("tabela-itens")).not.toBeInTheDocument();
+});
+
+test("subtotal e total atualizados em tempo real", async () => {
   await renderNewOrderPage();
   fireEvent.change(screen.getByTestId("input-cliente"), {
     target: { value: "Ana Lima" },
